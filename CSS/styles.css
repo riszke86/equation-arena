@@ -1,0 +1,1771 @@
+/* ==========================================
+   GLOBAL RESET AND VARIABLES
+========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #080d16;
+    --panel: #111a2a;
+    --panel-light: #1a2639;
+
+    --gold: #e8c158;
+    --gold-light: #f5db8a;
+
+    --text: #f7f8fa;
+    --muted: #aeb7c7;
+
+    --border: rgba(255, 255, 255, 0.13);
+}
+
+
+/* ==========================================
+   PAGE
+========================================== */
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at top,
+            #25334d,
+            var(--background) 65%
+        );
+}
+
+button,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   MAIN APPLICATION CONTAINER
+========================================== */
+
+.app-container {
+    width: min(1180px, 94%);
+    min-height: 760px;
+
+    margin: 30px auto;
+    padding: 34px;
+
+    border: 1px solid var(--border);
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 29, 45, 0.97),
+            rgba(8, 13, 22, 0.98)
+        );
+
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ==========================================
+   SCREENS
+========================================== */
+
+.screen {
+    display: none;
+    min-height: 680px;
+}
+
+.screen.active-screen {
+    display: block;
+}
+
+#main-menu.active-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ==========================================
+   HEADINGS AND LABELS
+========================================== */
+
+.section-label,
+.small-label {
+    margin: 0 0 8px;
+
+    color: var(--gold);
+
+    font-size: 0.76rem;
+    font-weight: bold;
+
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+}
+
+.screen-heading {
+    max-width: 650px;
+
+    margin: 20px auto 35px;
+
+    text-align: center;
+}
+
+.screen-heading h2 {
+    margin: 5px 0 10px;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+}
+
+.screen-heading p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+button {
+    padding: 14px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    font-weight: bold;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.primary-button {
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            #b78625
+        );
+
+    color: #17130b;
+}
+
+.primary-button:hover:not(:disabled) {
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold-light),
+            var(--gold)
+        );
+}
+
+.large-button {
+    padding: 18px;
+    font-size: 1.1rem;
+}
+
+.menu-button,
+.secondary-button,
+.back-button {
+    border: 1px solid var(--border);
+
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+}
+
+.menu-button:hover:not(:disabled),
+.secondary-button:hover:not(:disabled),
+.back-button:hover:not(:disabled) {
+    border-color: var(--gold);
+
+    background: rgba(232, 193, 88, 0.1);
+}
+
+.back-button {
+    margin-bottom: 25px;
+}
+
+
+/* ==========================================
+   MAIN MENU
+========================================== */
+
+.game-logo {
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.game-logo h1 {
+    margin: 0;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: clamp(3rem, 8vw, 6rem);
+
+    line-height: 0.9;
+    text-transform: uppercase;
+}
+
+.game-logo h1 span {
+    display: block;
+    color: var(--gold);
+}
+
+.tagline {
+    color: var(--muted);
+
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+}
+
+.main-menu-buttons {
+    width: min(420px, 100%);
+
+    display: grid;
+    gap: 12px;
+}
+
+
+/* ==========================================
+   PLAY SETUP
+========================================== */
+
+.setup-panel {
+    width: min(620px, 100%);
+
+    display: grid;
+    gap: 15px;
+
+    margin: 0 auto;
+    padding: 30px;
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.045);
+}
+
+.setup-panel label {
+    font-weight: bold;
+}
+
+.setup-panel select {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--panel);
+    color: white;
+}
+
+.setup-panel p {
+    margin-top: 0;
+
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.reward-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: rgba(232, 193, 88, 0.1);
+}
+
+.reward-box strong {
+    color: var(--gold-light);
+}
+
+
+/* ==========================================
+   TUTORIAL
+========================================== */
+
+.tutorial-container {
+    width: min(730px, 100%);
+    margin: 20px auto;
+}
+
+.tutorial-progress {
+    height: 8px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.09);
+}
+
+#tutorial-progress-bar {
+    width: 10%;
+    height: 100%;
+
+    background: var(--gold);
+
+    transition: width 0.3s ease;
+}
+
+#tutorial-content {
+    min-height: 460px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-top: 20px;
+    padding: 35px;
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    text-align: center;
+}
+
+#tutorial-content h2 {
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 2.3rem;
+}
+
+#tutorial-content p,
+#tutorial-content li {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.tutorial-navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    margin-top: 15px;
+}
+
+.tutorial-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin: 22px 0;
+}
+
+.tutorial-card,
+.tutorial-symbol {
+    min-width: 65px;
+
+    padding: 16px 12px;
+
+    border-radius: 9px;
+
+    background: white;
+    color: #111;
+
+    font-weight: bold;
+}
+
+.tutorial-card.gold {
+    background: #e8c44f;
+}
+
+.tutorial-card.silver {
+    background: #c6cbd3;
+}
+
+.tutorial-card.bronze {
+    background: #b77943;
+}
+
+.tutorial-card.dirt {
+    background: #74543c;
+    color: white;
+}
+
+.special-symbol {
+    border: 3px solid var(--gold);
+}
+
+.tutorial-choice {
+    display: inline-block;
+
+    margin: 8px;
+    padding: 13px 18px;
+
+    border-radius: 9px;
+
+    background: rgba(232, 193, 88, 0.14);
+    color: var(--gold-light);
+
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   COMPACT PRACTICE ROUND
+========================================== */
+
+#practice-screen .screen-heading {
+    margin: 5px auto 18px;
+}
+
+#practice-screen .back-button {
+    margin-bottom: 8px;
+}
+
+.practice-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* Practice guide */
+
+.practice-guide {
+    position: sticky;
+    top: 15px;
+
+    padding: 20px;
+
+    border: 1px solid rgba(232, 193, 88, 0.4);
+    border-radius: 14px;
+
+    background: rgba(232, 193, 88, 0.08);
+}
+
+.practice-guide h3 {
+    margin: 8px 0;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 1.35rem;
+}
+
+.practice-guide p {
+    margin: 8px 0;
+
+    color: var(--muted);
+    line-height: 1.45;
+}
+
+.step-counter {
+    margin-top: 15px;
+    padding-top: 12px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* Practice table */
+
+.practice-table {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        210px;
+
+    grid-template-areas:
+        "status status"
+        "equation marker"
+        "hand marker"
+        "controls controls"
+        "feedback feedback";
+
+    gap: 12px;
+
+    padding: 18px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.035);
+}
+
+
+/* Practice status */
+
+.practice-status {
+    grid-area: status;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    margin: 0;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.practice-status div {
+    padding: 10px;
+    text-align: center;
+}
+
+.practice-status div + div {
+    border-left: 1px solid var(--border);
+}
+
+.practice-status span,
+.practice-status strong {
+    display: block;
+}
+
+.practice-status span {
+    margin-bottom: 3px;
+
+    color: var(--muted);
+    font-size: 0.72rem;
+}
+
+.practice-status strong {
+    color: var(--gold-light);
+}
+
+
+/* Practice equation */
+
+.practice-equation-area {
+    grid-area: equation;
+
+    margin: 0;
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: rgba(0, 0, 0, 0.14);
+}
+
+.practice-equation-display {
+    min-height: 60px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    padding: 8px;
+
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    border-radius: 8px;
+}
+
+.placeholder {
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.equation-token {
+    min-width: 40px;
+
+    padding: 9px;
+
+    border-radius: 7px;
+
+    background: white;
+    color: #111;
+
+    text-align: center;
+    font-weight: bold;
+}
+
+.practice-result {
+    margin: 9px 0 0;
+
+    color: var(--muted);
+    text-align: center;
+}
+
+.practice-result strong {
+    color: var(--gold-light);
+}
+
+
+/* Practice hand */
+
+.practice-hand {
+    grid-area: hand;
+
+    margin: 0;
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.practice-card-row,
+.practice-symbol-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+}
+
+.practice-symbol-row {
+    margin-bottom: 0;
+}
+
+.practice-card {
+    width: 66px;
+    min-height: 82px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 7px;
+
+    border: 2px solid transparent;
+    border-radius: 8px;
+
+    color: #111;
+}
+
+.practice-card.gold {
+    background: #e8c44f;
+}
+
+.practice-card.silver {
+    background: #c6cbd3;
+}
+
+.practice-card.bronze {
+    background: #b77943;
+}
+
+.practice-card.dirt {
+    background: #74543c;
+    color: white;
+}
+
+.card-value {
+    font-size: 1.35rem;
+}
+
+.card-label {
+    margin-top: 5px;
+
+    font-size: 0.58rem;
+    text-transform: uppercase;
+}
+
+.practice-symbol {
+    width: 50px;
+    height: 44px;
+
+    padding: 5px;
+
+    border: 2px solid transparent;
+    border-radius: 7px;
+
+    background: white;
+    color: #111;
+
+    font-size: 1.2rem;
+}
+
+
+/* Practice token states */
+
+.practice-token.expected-token {
+    border-color: var(--gold);
+
+    box-shadow:
+        0 0 0 3px rgba(232, 193, 88, 0.18);
+}
+
+.practice-token.used {
+    opacity: 0.25;
+}
+
+.practice-token:disabled {
+    cursor: default;
+}
+
+
+/* Practice marker area */
+
+.practice-marker-area {
+    grid-area: marker;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.marker-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+
+    margin: 0;
+}
+
+.marker-button {
+    min-height: 74px;
+
+    padding: 12px;
+
+    border: 2px solid transparent;
+
+    background: rgba(255, 255, 255, 0.07);
+    color: white;
+}
+
+.marker-button span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 0.7rem;
+    font-weight: normal;
+}
+
+.marker-button.selected {
+    border-color: var(--gold);
+
+    background: rgba(232, 193, 88, 0.15);
+}
+
+
+/* Practice controls */
+
+.practice-controls {
+    grid-area: controls;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+
+    margin: 0;
+}
+
+.practice-controls button {
+    padding: 11px 8px;
+    font-size: 0.82rem;
+}
+
+
+/* Practice feedback */
+
+.practice-feedback {
+    grid-area: feedback;
+
+    min-height: 20px;
+
+    margin: 0;
+    padding: 9px;
+
+    border-radius: 8px;
+
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: bold;
+}
+
+.practice-feedback:empty {
+    display: none;
+}
+
+.practice-feedback.success {
+    background: rgba(80, 184, 119, 0.12);
+    color: #9ae2b5;
+}
+
+.practice-feedback.error {
+    background: rgba(205, 75, 82, 0.12);
+    color: #ff9da2;
+}
+
+.practice-feedback.information {
+    background: rgba(232, 193, 88, 0.1);
+    color: var(--gold-light);
+}
+
+
+/* ==========================================
+   GAME SCREEN
+========================================== */
+
+.game-status {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    margin-bottom: 20px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.game-status div {
+    padding: 15px;
+    text-align: center;
+}
+
+.game-status div + div {
+    border-left: 1px solid var(--border);
+}
+
+.game-status span,
+.game-status strong {
+    display: block;
+}
+
+.game-status span {
+    margin-bottom: 5px;
+
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.game-status strong {
+    color: var(--gold-light);
+}
+
+#players-area {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(220px, 1fr)
+        );
+
+    gap: 18px;
+}
+
+.player-panel {
+    padding: 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.symbol-list,
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.player-symbol {
+    min-width: 38px;
+
+    padding: 8px;
+
+    border-radius: 7px;
+
+    background: rgba(232, 193, 88, 0.14);
+    color: var(--gold-light);
+
+    text-align: center;
+}
+
+.game-card {
+    min-width: 48px;
+
+    padding: 13px 9px;
+
+    border-radius: 7px;
+
+    background: white;
+    color: black;
+
+    text-align: center;
+    font-weight: bold;
+}
+
+.game-card.gold {
+    background: #e8c44f;
+}
+
+.game-card.silver {
+    background: #c6cbd3;
+}
+
+.game-card.bronze {
+    background: #b77943;
+}
+
+.game-card.dirt {
+    background: #74543c;
+    color: white;
+}
+
+.game-card.special {
+    border: 3px solid var(--gold);
+}
+
+.game-actions {
+    width: min(400px, 100%);
+
+    margin: 25px auto 0;
+}
+
+.game-actions button {
+    width: 100%;
+}
+
+.game-message {
+    min-height: 25px;
+
+    color: var(--gold-light);
+
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   TABLET RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 950px) {
+    .practice-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .practice-guide {
+        position: static;
+
+        display: grid;
+        grid-template-columns:
+            160px
+            1fr
+            90px;
+
+        align-items: center;
+        gap: 12px;
+    }
+
+    .practice-guide h3,
+    .practice-guide p,
+    .step-counter {
+        margin: 0;
+    }
+
+    .step-counter {
+        padding: 0;
+
+        border-top: none;
+
+        text-align: right;
+    }
+}
+
+
+/* ==========================================
+   SMALL TABLETS
+========================================== */
+
+@media (max-width: 700px) {
+    .practice-table {
+        grid-template-columns: 1fr;
+
+        grid-template-areas:
+            "status"
+            "equation"
+            "hand"
+            "marker"
+            "controls"
+            "feedback";
+    }
+
+    .practice-guide {
+        display: block;
+    }
+
+    .step-counter {
+        margin-top: 12px;
+        padding-top: 10px;
+
+        border-top: 1px solid var(--border);
+
+        text-align: left;
+    }
+
+    .practice-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .marker-buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+    .app-container {
+        width: 100%;
+        min-height: 100vh;
+
+        margin: 0;
+        padding: 20px;
+
+        border: none;
+        border-radius: 0;
+    }
+
+    .tutorial-navigation {
+        grid-template-columns: 1fr;
+    }
+
+    .reward-box {
+        flex-direction: column;
+    }
+
+    .game-status {
+        grid-template-columns: 1fr;
+    }
+
+    .game-status div + div {
+        border-top: 1px solid var(--border);
+        border-left: none;
+    }
+
+    #tutorial-content {
+        min-height: 400px;
+        padding: 24px 18px;
+    }
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+    .practice-status,
+    .practice-controls,
+    .marker-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .practice-status div + div {
+        border-top: 1px solid var(--border);
+        border-left: none;
+    }
+
+    .practice-card {
+        width: 61px;
+        min-height: 78px;
+    }
+
+    .practice-symbol {
+        width: 46px;
+    }
+}
+
+/* ==========================================
+   PREMIUM CARD DESIGN
+========================================== */
+
+:root {
+    --card-radius: 12px;
+    --card-shadow:
+        0 12px 22px rgba(0, 0, 0, 0.34),
+        0 3px 6px rgba(0, 0, 0, 0.28);
+
+    --card-shadow-hover:
+        0 20px 34px rgba(0, 0, 0, 0.44),
+        0 6px 12px rgba(0, 0, 0, 0.32);
+}
+
+
+/* ==========================================
+   ALL CARD TYPES
+========================================== */
+
+.practice-card,
+.game-card,
+.tutorial-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: var(--card-radius);
+
+    box-shadow: var(--card-shadow);
+
+    text-shadow:
+        0 1px 1px rgba(255, 255, 255, 0.35);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        filter 0.22s ease,
+        border-color 0.22s ease;
+}
+
+
+/* Inner border */
+
+.practice-card::after,
+.game-card::after,
+.tutorial-card::after {
+    content: "";
+
+    position: absolute;
+    inset: 5px;
+    z-index: -1;
+
+    pointer-events: none;
+
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: calc(var(--card-radius) - 5px);
+}
+
+
+/* Top shine */
+
+.practice-card::before,
+.game-card::before,
+.tutorial-card::before {
+    content: "";
+
+    position: absolute;
+    top: -50%;
+    left: -35%;
+    z-index: -1;
+
+    width: 75%;
+    height: 180%;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            105deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.38) 48%,
+            transparent 72%
+        );
+
+    transform: rotate(12deg);
+
+    transition:
+        left 0.45s ease;
+}
+
+.practice-card:hover:not(:disabled)::before,
+.game-card:hover::before,
+.tutorial-card:hover::before {
+    left: 80%;
+}
+
+
+/* Hover depth */
+
+.practice-card:hover:not(:disabled),
+.game-card:hover,
+.tutorial-card:hover {
+    transform:
+        translateY(-7px)
+        rotateX(3deg);
+
+    box-shadow: var(--card-shadow-hover);
+
+    filter: brightness(1.06);
+}
+
+
+/* ==========================================
+   GOLD CARDS
+========================================== */
+
+.practice-card.gold,
+.game-card.gold,
+.tutorial-card.gold {
+    color: #271d04;
+
+    background:
+        radial-gradient(
+            circle at 25% 18%,
+            rgba(255, 255, 255, 0.72),
+            transparent 26%
+        ),
+        linear-gradient(
+            135deg,
+            #fff0a6 0%,
+            #e9c34f 24%,
+            #b8871f 52%,
+            #f1d56a 74%,
+            #8f6516 100%
+        );
+
+    border-color: #f4dc7b;
+
+    box-shadow:
+        0 0 18px rgba(232, 193, 88, 0.2),
+        var(--card-shadow);
+}
+
+
+/* ==========================================
+   SILVER CARDS
+========================================== */
+
+.practice-card.silver,
+.game-card.silver,
+.tutorial-card.silver {
+    color: #18202a;
+
+    background:
+        repeating-linear-gradient(
+            100deg,
+            rgba(255, 255, 255, 0.12) 0,
+            rgba(255, 255, 255, 0.12) 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        ),
+        linear-gradient(
+            135deg,
+            #fbfdff 0%,
+            #cbd2da 22%,
+            #8f9aa8 48%,
+            #e9edf1 72%,
+            #7c8795 100%
+        );
+
+    border-color: #edf2f6;
+}
+
+
+/* ==========================================
+   BRONZE CARDS
+========================================== */
+
+.practice-card.bronze,
+.game-card.bronze,
+.tutorial-card.bronze {
+    color: #241006;
+
+    background:
+        radial-gradient(
+            circle at 75% 20%,
+            rgba(255, 222, 174, 0.42),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            #e8ac70 0%,
+            #b56e37 25%,
+            #753a1e 50%,
+            #c9864b 72%,
+            #5b2a17 100%
+        );
+
+    border-color: #d99b62;
+}
+
+
+/* ==========================================
+   DIRT CARDS
+========================================== */
+
+.practice-card.dirt,
+.game-card.dirt,
+.tutorial-card.dirt {
+    color: #fff4e8;
+
+    background:
+        radial-gradient(
+            circle at 15% 25%,
+            rgba(255, 255, 255, 0.08) 0 3px,
+            transparent 4px
+        ),
+        radial-gradient(
+            circle at 72% 65%,
+            rgba(0, 0, 0, 0.18) 0 4px,
+            transparent 5px
+        ),
+        radial-gradient(
+            circle at 44% 80%,
+            rgba(255, 255, 255, 0.06) 0 2px,
+            transparent 3px
+        ),
+        linear-gradient(
+            145deg,
+            #755037,
+            #4f3021 48%,
+            #2f1b13
+        );
+
+    border-color: #967058;
+
+    text-shadow:
+        0 2px 2px rgba(0, 0, 0, 0.75);
+}
+
+
+/* ==========================================
+   CARD VALUES AND LABELS
+========================================== */
+
+.card-value {
+    position: relative;
+    z-index: 2;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.card-label {
+    position: relative;
+    z-index: 2;
+
+    padding: 3px 6px;
+
+    border-radius: 20px;
+
+    background: rgba(0, 0, 0, 0.15);
+
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.08rem;
+}
+
+.practice-card.dirt .card-label {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+/* ==========================================
+   PRACTICE CARDS
+========================================== */
+
+.practice-card {
+    width: 72px;
+    min-height: 94px;
+
+    padding: 9px;
+}
+
+.practice-card:not(:disabled) {
+    cursor: pointer;
+}
+
+
+/* Expected card glow */
+
+.practice-token.expected-token {
+    border-color: #fff1a8;
+
+    box-shadow:
+        0 0 0 3px rgba(232, 193, 88, 0.24),
+        0 0 25px rgba(232, 193, 88, 0.65),
+        var(--card-shadow);
+
+    animation:
+        premiumCardPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes premiumCardPulse {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-5px) scale(1.025);
+    }
+}
+
+
+/* Used cards */
+
+.practice-token.used {
+    opacity: 0.22;
+
+    filter:
+        grayscale(0.7)
+        brightness(0.65);
+
+    transform: scale(0.94);
+
+    box-shadow: none;
+}
+
+
+/* ==========================================
+   SYMBOL CARDS
+========================================== */
+
+.practice-symbol,
+.tutorial-symbol,
+.player-symbol {
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    border-radius: 10px;
+
+    background:
+        radial-gradient(
+            circle at 30% 20%,
+            rgba(255, 255, 255, 0.95),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #cfd6df 48%,
+            #929eac
+        );
+
+    color: #111923;
+
+    box-shadow:
+        0 8px 15px rgba(0, 0, 0, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 0.85);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.practice-symbol:hover:not(:disabled),
+.tutorial-symbol:hover {
+    transform: translateY(-5px);
+
+    border-color: var(--gold-light);
+
+    box-shadow:
+        0 13px 22px rgba(0, 0, 0, 0.35),
+        0 0 15px rgba(232, 193, 88, 0.22);
+}
+
+.practice-symbol.expected-token {
+    border-color: var(--gold-light);
+
+    box-shadow:
+        0 0 0 3px rgba(232, 193, 88, 0.2),
+        0 0 22px rgba(232, 193, 88, 0.55);
+}
+
+
+/* Special × and √ symbols */
+
+.special-symbol,
+.game-card.special {
+    border: 2px solid #f0ce6a;
+
+    background:
+        radial-gradient(
+            circle at 25% 20%,
+            rgba(255, 255, 255, 0.5),
+            transparent 28%
+        ),
+        linear-gradient(
+            145deg,
+            #2d3547,
+            #111827 55%,
+            #05080f
+        );
+
+    color: var(--gold-light);
+
+    box-shadow:
+        0 0 18px rgba(232, 193, 88, 0.3),
+        var(--card-shadow);
+
+    text-shadow:
+        0 0 8px rgba(245, 219, 138, 0.38);
+}
+
+
+/* ==========================================
+   EQUATION TOKENS
+========================================== */
+
+.equation-token {
+    position: relative;
+    overflow: hidden;
+
+    min-width: 45px;
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #d7dde5 60%,
+            #a9b3c0
+        );
+
+    color: #121821;
+
+    box-shadow:
+        0 7px 14px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.9);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1.08rem;
+    font-weight: 900;
+
+    animation:
+        equationTokenAppear 0.24s ease;
+}
+
+@keyframes equationTokenAppear {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(10px)
+            scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* ==========================================
+   CARD AREAS
+========================================== */
+
+.practice-card-row,
+.practice-symbol-row,
+.card-list,
+.symbol-list {
+    perspective: 800px;
+}
+
+.practice-hand {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(34, 73, 63, 0.22),
+            transparent 75%
+        ),
+        rgba(0, 0, 0, 0.14);
+}
+
+.practice-equation-display {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(5, 9, 16, 0.78),
+            rgba(19, 29, 44, 0.72)
+        );
+
+    box-shadow:
+        inset 0 0 22px rgba(0, 0, 0, 0.35);
+}
+
+
+/* ==========================================
+   PREMIUM CARD BACK
+========================================== */
+
+.card-back {
+    position: relative;
+    overflow: hidden;
+
+    border: 2px solid #d9b94f;
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            rgba(232, 193, 88, 0.16) 0,
+            rgba(232, 193, 88, 0.16) 5px,
+            transparent 5px,
+            transparent 10px
+        ),
+        radial-gradient(
+            circle at center,
+            #34415b,
+            #152033 60%,
+            #080d16
+        );
+
+    color: var(--gold-light);
+
+    box-shadow:
+        0 0 20px rgba(232, 193, 88, 0.2),
+        var(--card-shadow);
+}
+
+.card-back::after {
+    content: "EA";
+
+    position: absolute;
+    inset: 10px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(232, 193, 88, 0.48);
+    border-radius: 7px;
+
+    color: rgba(245, 219, 138, 0.72);
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   PREMIUM PLAYER PANELS
+========================================== */
+
+.player-panel {
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(232, 193, 88, 0.07),
+            transparent 45%
+        ),
+        rgba(255, 255, 255, 0.04);
+
+    box-shadow:
+        0 14px 26px rgba(0, 0, 0, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.player-panel::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold),
+            transparent
+        );
+}
+
+
+/* ==========================================
+   SMALL SCREEN CARD ADJUSTMENTS
+========================================== */
+
+@media (max-width: 600px) {
+    .practice-card {
+        width: 63px;
+        min-height: 84px;
+    }
+
+    .card-value {
+        font-size: 1.4rem;
+    }
+
+    .practice-symbol {
+        width: 47px;
+        height: 42px;
+    }
+}

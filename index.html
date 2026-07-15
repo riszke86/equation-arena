@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Equation Arena</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <main class="app-container">
+
+        <!-- =========================
+             MAIN MENU
+        ========================== -->
+
+        <section
+            id="main-menu"
+            class="screen active-screen"
+        >
+
+            <div class="game-logo">
+
+                <p class="section-label">
+                    Enter the
+                </p>
+
+                <h1>
+                    Equation
+                    <span>Arena</span>
+                </h1>
+
+                <p class="tagline">
+                    Calculate. Bet. Outsmart.
+                </p>
+
+            </div>
+
+            <div class="main-menu-buttons">
+
+                <button
+                    id="open-play-button"
+                    class="primary-button large-button"
+                >
+                    Play
+                </button>
+
+                <button
+                    id="open-tutorial-button"
+                    class="menu-button"
+                >
+                    Learn the Game
+                </button>
+
+                <button
+                    id="open-practice-button"
+                    class="menu-button"
+                >
+                    Practice Round
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PLAY SETUP
+        ========================== -->
+
+        <section
+            id="play-screen"
+            class="screen"
+        >
+
+            <button
+                class="back-button"
+                data-screen="main-menu"
+            >
+                ← Main Menu
+            </button>
+
+            <div class="screen-heading">
+
+                <p class="section-label">
+                    New Match
+                </p>
+
+                <h2>Choose Your Game</h2>
+
+            </div>
+
+            <div class="setup-panel">
+
+                <label for="difficulty">
+                    Difficulty
+                </label>
+
+                <select id="difficulty">
+
+                    <option value="very-easy">
+                        Very Easy
+                    </option>
+
+                    <option value="easy">
+                        Easy
+                    </option>
+
+                    <option
+                        value="medium"
+                        selected
+                    >
+                        Medium
+                    </option>
+
+                    <option value="hard">
+                        Hard
+                    </option>
+
+                    <option value="expert">
+                        Expert
+                    </option>
+
+                </select>
+
+                <p id="difficulty-description">
+                    The computer understands basic strategy but
+                    may still make mistakes.
+                </p>
+
+                <label for="ai-count">
+                    Computer Players
+                </label>
+
+                <select id="ai-count">
+
+                    <option value="1">
+                        1 Computer
+                    </option>
+
+                    <option value="2">
+                        2 Computers
+                    </option>
+
+                    <option
+                        value="3"
+                        selected
+                    >
+                        3 Computers
+                    </option>
+
+                </select>
+
+                <div class="reward-box">
+
+                    <span>Possible reward</span>
+
+                    <strong>
+                        +<span id="reward-points">3</span>
+                        points
+                    </strong>
+
+                </div>
+
+                <button
+                    id="start-game-button"
+                    class="primary-button"
+                >
+                    Start Match
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             TUTORIAL
+        ========================== -->
+
+        <section
+            id="tutorial-screen"
+            class="screen"
+        >
+
+            <button
+                class="back-button"
+                data-screen="main-menu"
+            >
+                ← Main Menu
+            </button>
+
+            <div class="tutorial-container">
+
+                <div class="tutorial-progress">
+                    <div id="tutorial-progress-bar"></div>
+                </div>
+
+                <p
+                    id="tutorial-step-number"
+                    class="section-label"
+                >
+                    Step 1 of 10
+                </p>
+
+                <div id="tutorial-content"></div>
+
+                <div class="tutorial-navigation">
+
+                    <button
+                        id="tutorial-back-button"
+                        class="secondary-button"
+                    >
+                        Back
+                    </button>
+
+                    <button
+                        id="tutorial-next-button"
+                        class="primary-button"
+                    >
+                        Next
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PRACTICE ROUND
+        ========================== -->
+
+        <section
+            id="practice-screen"
+            class="screen"
+        >
+
+            <button
+                id="leave-practice-button"
+                class="back-button"
+            >
+                ← Main Menu
+            </button>
+
+            <div class="screen-heading">
+
+                <p class="section-label">
+                    Guided Learning
+                </p>
+
+                <h2>Practice Round</h2>
+
+                <p>
+                    Follow the guide and build a perfect Low
+                    equation.
+                </p>
+
+            </div>
+
+            <div class="practice-layout">
+
+                <aside class="practice-guide">
+
+                    <p class="section-label">
+                        Your Guide
+                    </p>
+
+                    <h3 id="practice-guide-title">
+                        Welcome
+                    </h3>
+
+                    <p id="practice-guide-message">
+                        Press Start Practice to begin.
+                    </p>
+
+                    <p class="step-counter">
+
+                        Step
+
+                        <strong id="practice-step-number">
+                            1
+                        </strong>
+
+                        of
+
+                        <strong id="practice-total-steps">
+                            7
+                        </strong>
+
+                    </p>
+
+                </aside>
+
+
+                <div class="practice-table">
+
+                    <div class="practice-status">
+
+                        <div>
+                            <span>Your Chips</span>
+                            <strong id="practice-player-chips">
+                                10
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Practice Pot</span>
+                            <strong id="practice-pot">
+                                0
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Marker</span>
+                            <strong id="practice-target">
+                                Not selected
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <section class="practice-equation-area">
+
+                        <p class="small-label">
+                            Your Equation
+                        </p>
+
+                        <div
+                            id="practice-equation-display"
+                            class="practice-equation-display"
+                        >
+                            <span class="placeholder">
+                                Select your cards
+                            </span>
+                        </div>
+
+                        <p class="practice-result">
+
+                            Result:
+
+                            <strong id="practice-result">
+                                —
+                            </strong>
+
+                        </p>
+
+                    </section>
+
+
+                    <section class="practice-hand">
+
+                        <p class="small-label">
+                            Number Cards
+                        </p>
+
+                        <div class="practice-card-row">
+
+                            <button
+                                class="practice-card gold practice-token"
+                                data-token="10"
+                                disabled
+                            >
+                                <span class="card-value">
+                                    10
+                                </span>
+
+                                <span class="card-label">
+                                    Hidden
+                                </span>
+                            </button>
+
+                            <button
+                                class="practice-card silver practice-token"
+                                data-token="2"
+                                disabled
+                            >
+                                <span class="card-value">
+                                    2
+                                </span>
+
+                                <span class="card-label">
+                                    Open
+                                </span>
+                            </button>
+
+                            <button
+                                class="practice-card bronze practice-token"
+                                data-token="8"
+                                disabled
+                            >
+                                <span class="card-value">
+                                    8
+                                </span>
+
+                                <span class="card-label">
+                                    Open
+                                </span>
+                            </button>
+
+                            <button
+                                class="practice-card dirt practice-token"
+                                data-token="4"
+                                disabled
+                            >
+                                <span class="card-value">
+                                    4
+                                </span>
+
+                                <span class="card-label">
+                                    Final
+                                </span>
+                            </button>
+
+                        </div>
+
+
+                        <p class="small-label">
+                            Symbol Cards
+                        </p>
+
+                        <div class="practice-symbol-row">
+
+                            <button
+                                class="practice-symbol practice-token"
+                                data-token="÷"
+                                disabled
+                            >
+                                ÷
+                            </button>
+
+                            <button
+                                class="practice-symbol practice-token"
+                                data-token="−"
+                                disabled
+                            >
+                                −
+                            </button>
+
+                            <button
+                                class="practice-symbol practice-token"
+                                data-token="+"
+                                disabled
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <section class="practice-marker-area">
+
+                        <p class="small-label">
+                            Choose Your Marker
+                        </p>
+
+                        <div class="marker-buttons">
+
+                            <button
+                                id="practice-high-button"
+                                class="marker-button"
+                                disabled
+                            >
+                                High
+
+                                <span>
+                                    Close to 20
+                                </span>
+                            </button>
+
+                            <button
+                                id="practice-low-button"
+                                class="marker-button"
+                                disabled
+                            >
+                                Low
+
+                                <span>
+                                    Close to 1
+                                </span>
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <div class="practice-controls">
+
+                        <button
+                            id="start-practice-button"
+                            class="primary-button"
+                        >
+                            Start Practice
+                        </button>
+
+                        <button
+                            id="practice-undo-button"
+                            class="secondary-button"
+                            disabled
+                        >
+                            Undo
+                        </button>
+
+                        <button
+                            id="practice-reset-button"
+                            class="secondary-button"
+                            disabled
+                        >
+                            Reset Equation
+                        </button>
+
+                        <button
+                            id="practice-submit-button"
+                            class="primary-button"
+                            disabled
+                        >
+                            Submit Equation
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="practice-feedback"
+                        class="practice-feedback"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             GAME SCREEN
+        ========================== -->
+
+        <section
+            id="game-screen"
+            class="screen"
+        >
+
+            <button
+                class="back-button"
+                data-screen="main-menu"
+            >
+                ← Leave Match
+            </button>
+
+            <div class="game-status">
+
+                <div>
+                    <span>Round</span>
+                    <strong id="round-number">
+                        1
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Pot</span>
+
+                    <strong>
+                        <span id="pot">0</span>
+                        chips
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Difficulty</span>
+
+                    <strong id="game-difficulty">
+                        Medium
+                    </strong>
+                </div>
+
+            </div>
+
+            <section id="players-area"></section>
+
+            <div class="game-actions">
+
+                <button
+                    id="deal-button"
+                    class="primary-button"
+                >
+                    Deal Cards
+                </button>
+
+            </div>
+
+            <p
+                id="message"
+                class="game-message"
+            ></p>
+
+        </section>
+
+    </main>
+
+    <script src="js/game.js"></script>
+
+</body>
+
+</html>
+
