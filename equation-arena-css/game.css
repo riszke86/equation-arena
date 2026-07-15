@@ -1,0 +1,137 @@
+/* ==========================================
+   GAME SCREEN
+========================================== */
+
+.game-status {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    margin-bottom: 20px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.game-status div {
+    padding: 15px;
+    text-align: center;
+}
+
+.game-status div + div {
+    border-left: 1px solid var(--border);
+}
+
+.game-status span,
+.game-status strong {
+    display: block;
+}
+
+.game-status span {
+    margin-bottom: 5px;
+
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.game-status strong {
+    color: var(--gold-light);
+}
+
+#players-area {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(220px, 1fr)
+        );
+
+    gap: 18px;
+}
+
+.player-panel {
+    padding: 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.symbol-list,
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.player-symbol {
+    min-width: 38px;
+
+    padding: 8px;
+
+    border-radius: 7px;
+
+    background: rgba(232, 193, 88, 0.14);
+    color: var(--gold-light);
+
+    text-align: center;
+}
+
+.game-card {
+    min-width: 48px;
+
+    padding: 13px 9px;
+
+    border-radius: 7px;
+
+    background: white;
+    color: black;
+
+    text-align: center;
+    font-weight: bold;
+}
+
+.game-card.gold {
+    background: #e8c44f;
+}
+
+.game-card.silver {
+    background: #c6cbd3;
+}
+
+.game-card.bronze {
+    background: #b77943;
+}
+
+.game-card.dirt {
+    background: #74543c;
+    color: white;
+}
+
+.game-card.special {
+    border: 3px solid var(--gold);
+}
+
+.game-actions {
+    width: min(400px, 100%);
+
+    margin: 25px auto 0;
+}
+
+.game-actions button {
+    width: 100%;
+}
+
+.game-message {
+    min-height: 25px;
+
+    color: var(--gold-light);
+
+    text-align: center;
+    font-weight: bold;
+}
+
+

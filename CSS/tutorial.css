@@ -1,0 +1,127 @@
+/* ==========================================
+   TUTORIAL
+========================================== */
+
+.tutorial-container {
+    width: min(730px, 100%);
+    margin: 20px auto;
+}
+
+.tutorial-progress {
+    height: 8px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.09);
+}
+
+#tutorial-progress-bar {
+    width: 10%;
+    height: 100%;
+
+    background: var(--gold);
+
+    transition: width 0.3s ease;
+}
+
+#tutorial-content {
+    min-height: 460px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-top: 20px;
+    padding: 35px;
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    text-align: center;
+}
+
+#tutorial-content h2 {
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 2.3rem;
+}
+
+#tutorial-content p,
+#tutorial-content li {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.tutorial-navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    margin-top: 15px;
+}
+
+.tutorial-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin: 22px 0;
+}
+
+.tutorial-card,
+.tutorial-symbol {
+    min-width: 65px;
+
+    padding: 16px 12px;
+
+    border-radius: 9px;
+
+    background: white;
+    color: #111;
+
+    font-weight: bold;
+}
+
+.tutorial-card.gold {
+    background: #e8c44f;
+}
+
+.tutorial-card.silver {
+    background: #c6cbd3;
+}
+
+.tutorial-card.bronze {
+    background: #b77943;
+}
+
+.tutorial-card.dirt {
+    background: #74543c;
+    color: white;
+}
+
+.special-symbol {
+    border: 3px solid var(--gold);
+}
+
+.tutorial-choice {
+    display: inline-block;
+
+    margin: 8px;
+    padding: 13px 18px;
+
+    border-radius: 9px;
+
+    background: rgba(232, 193, 88, 0.14);
+    color: var(--gold-light);
+
+    font-weight: bold;
+}
+

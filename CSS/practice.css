@@ -1,0 +1,403 @@
+/* ==========================================
+   COMPACT PRACTICE ROUND
+========================================== */
+
+#practice-screen .screen-heading {
+    margin: 5px auto 18px;
+}
+
+#practice-screen .back-button {
+    margin-bottom: 8px;
+}
+
+.practice-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* Practice guide */
+
+.practice-guide {
+    position: sticky;
+    top: 15px;
+
+    padding: 20px;
+
+    border: 1px solid rgba(232, 193, 88, 0.4);
+    border-radius: 14px;
+
+    background: rgba(232, 193, 88, 0.08);
+}
+
+.practice-guide h3 {
+    margin: 8px 0;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 1.35rem;
+}
+
+.practice-guide p {
+    margin: 8px 0;
+
+    color: var(--muted);
+    line-height: 1.45;
+}
+
+.step-counter {
+    margin-top: 15px;
+    padding-top: 12px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* Practice table */
+
+.practice-table {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        210px;
+
+    grid-template-areas:
+        "status status"
+        "equation marker"
+        "hand marker"
+        "controls controls"
+        "feedback feedback";
+
+    gap: 12px;
+
+    padding: 18px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.035);
+}
+
+
+/* Practice status */
+
+.practice-status {
+    grid-area: status;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    margin: 0;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.practice-status div {
+    padding: 10px;
+    text-align: center;
+}
+
+.practice-status div + div {
+    border-left: 1px solid var(--border);
+}
+
+.practice-status span,
+.practice-status strong {
+    display: block;
+}
+
+.practice-status span {
+    margin-bottom: 3px;
+
+    color: var(--muted);
+    font-size: 0.72rem;
+}
+
+.practice-status strong {
+    color: var(--gold-light);
+}
+
+
+/* Practice equation */
+
+.practice-equation-area {
+    grid-area: equation;
+
+    margin: 0;
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: rgba(0, 0, 0, 0.14);
+}
+
+.practice-equation-display {
+    min-height: 60px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    padding: 8px;
+
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    border-radius: 8px;
+}
+
+.placeholder {
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.equation-token {
+    min-width: 40px;
+
+    padding: 9px;
+
+    border-radius: 7px;
+
+    background: white;
+    color: #111;
+
+    text-align: center;
+    font-weight: bold;
+}
+
+.practice-result {
+    margin: 9px 0 0;
+
+    color: var(--muted);
+    text-align: center;
+}
+
+.practice-result strong {
+    color: var(--gold-light);
+}
+
+
+/* Practice hand */
+
+.practice-hand {
+    grid-area: hand;
+
+    margin: 0;
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.practice-card-row,
+.practice-symbol-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+}
+
+.practice-symbol-row {
+    margin-bottom: 0;
+}
+
+.practice-card {
+    width: 66px;
+    min-height: 82px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 7px;
+
+    border: 2px solid transparent;
+    border-radius: 8px;
+
+    color: #111;
+}
+
+.practice-card.gold {
+    background: #e8c44f;
+}
+
+.practice-card.silver {
+    background: #c6cbd3;
+}
+
+.practice-card.bronze {
+    background: #b77943;
+}
+
+.practice-card.dirt {
+    background: #74543c;
+    color: white;
+}
+
+.card-value {
+    font-size: 1.35rem;
+}
+
+.card-label {
+    margin-top: 5px;
+
+    font-size: 0.58rem;
+    text-transform: uppercase;
+}
+
+.practice-symbol {
+    width: 50px;
+    height: 44px;
+
+    padding: 5px;
+
+    border: 2px solid transparent;
+    border-radius: 7px;
+
+    background: white;
+    color: #111;
+
+    font-size: 1.2rem;
+}
+
+
+/* Practice token states */
+
+.practice-token.expected-token {
+    border-color: var(--gold);
+
+    box-shadow:
+        0 0 0 3px rgba(232, 193, 88, 0.18);
+}
+
+.practice-token.used {
+    opacity: 0.25;
+}
+
+.practice-token:disabled {
+    cursor: default;
+}
+
+
+/* Practice marker area */
+
+.practice-marker-area {
+    grid-area: marker;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.marker-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+
+    margin: 0;
+}
+
+.marker-button {
+    min-height: 74px;
+
+    padding: 12px;
+
+    border: 2px solid transparent;
+
+    background: rgba(255, 255, 255, 0.07);
+    color: white;
+}
+
+.marker-button span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 0.7rem;
+    font-weight: normal;
+}
+
+.marker-button.selected {
+    border-color: var(--gold);
+
+    background: rgba(232, 193, 88, 0.15);
+}
+
+
+/* Practice controls */
+
+.practice-controls {
+    grid-area: controls;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+
+    margin: 0;
+}
+
+.practice-controls button {
+    padding: 11px 8px;
+    font-size: 0.82rem;
+}
+
+
+/* Practice feedback */
+
+.practice-feedback {
+    grid-area: feedback;
+
+    min-height: 20px;
+
+    margin: 0;
+    padding: 9px;
+
+    border-radius: 8px;
+
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: bold;
+}
+
+.practice-feedback:empty {
+    display: none;
+}
+
+.practice-feedback.success {
+    background: rgba(80, 184, 119, 0.12);
+    color: #9ae2b5;
+}
+
+.practice-feedback.error {
+    background: rgba(205, 75, 82, 0.12);
+    color: #ff9da2;
+}
+
+.practice-feedback.information {
+    background: rgba(232, 193, 88, 0.1);
+    color: var(--gold-light);
+}
+
