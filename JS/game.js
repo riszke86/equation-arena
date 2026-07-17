@@ -1187,70 +1187,179 @@ const messageDisplay =
     document.getElementById("message");
 
 
+// ==========================================
+// GAME SETTINGS
+// ==========================================
+
 const GAME_SETTINGS = {
     startingChips: 20,
-    ante: 1
-};
+    ante: 1,
 
+    numberMinimum: 0,
+    numberMaximum: 10,
 
-let gameState = {
-    difficulty: "medium",
-    round: 1,
-    pot: 0,
-    deck: [],
-    players: [],
-    cardsDealt: false
-};
-
-
-function createDeck() {
-    const deck = [];
-
-    const cardTypes = [
+    numberCardTypes: [
         "gold",
         "silver",
         "bronze",
         "dirt"
-    ];
+    ],
 
-    for (const type of cardTypes) {
+    specialCardCopies: 4
+};
+
+
+// ==========================================
+// GAME STATE
+// ==========================================
+
+let gameState = {
+    difficulty: "medium",
+
+    round: 1,
+
+    pot: 0,
+
+    deck: [],
+
+    discardPile: [],
+
+    players: [],
+
+    cardsDealt: false,
+
+    phase: "setup",
+
+    eventMessages: []
+};
+
+
+// ==========================================
+// CARD HELPERS
+// ==========================================
+
+function isNumberCard(card) {
+    return (
+        card &&
+        card.category === "number"
+    );
+}
+
+
+function isMultiplyCard(card) {
+    return (
+        card &&
+        card.category === "multiply"
+    );
+}
+
+
+function isSquareRootCard(card) {
+    return (
+        card &&
+        card.category === "square-root"
+    );
+}
+
+
+function createNumberCard(
+    value,
+    type
+) {
+    return {
+        id: `${type}-${value}`,
+        category: "number",
+        value,
+        type
+    };
+}
+
+
+function createSpecialCard(
+    category,
+    value,
+    index
+) {
+    return {
+        id: `${category}-${index}`,
+        category,
+        value,
+        type: "special"
+    };
+}
+
+
+// ==========================================
+// DECK CREATION
+// ==========================================
+
+function createDeck() {
+    const deck = [];
+
+    for (
+        const type of
+        GAME_SETTINGS.numberCardTypes
+    ) {
         for (
-            let value = 0;
-            value <= 10;
+            let value =
+                GAME_SETTINGS.numberMinimum;
+
+            value <=
+                GAME_SETTINGS.numberMaximum;
+
             value++
         ) {
-            deck.push({
-                category: "number",
-                value,
-                type
-            });
+            deck.push(
+                createNumberCard(
+                    value,
+                    type
+                )
+            );
         }
     }
 
-    for (let index = 0; index < 4; index++) {
-        deck.push({
-            category: "multiply",
-            value: "×",
-            type: "special"
-        });
+    for (
+        let index = 1;
 
-        deck.push({
-            category: "square-root",
-            value: "√",
-            type: "special"
-        });
+        index <=
+            GAME_SETTINGS.specialCardCopies;
+
+        index++
+    ) {
+        deck.push(
+            createSpecialCard(
+                "multiply",
+                "×",
+                index
+            )
+        );
+
+        deck.push(
+            createSpecialCard(
+                "square-root",
+                "√",
+                index
+            )
+        );
     }
 
     return deck;
 }
 
 
+// ==========================================
+// DECK SHUFFLING
+// ==========================================
+
 function shuffleDeck(deck) {
-    const shuffled = [...deck];
+    const shuffledDeck = [...deck];
 
     for (
-        let index = shuffled.length - 1;
+        let index =
+            shuffledDeck.length - 1;
+
         index > 0;
+
         index--
     ) {
         const randomIndex =
@@ -1259,18 +1368,129 @@ function shuffleDeck(deck) {
                 (index + 1)
             );
 
-        [
-            shuffled[index],
-            shuffled[randomIndex]
-        ] = [
-            shuffled[randomIndex],
-            shuffled[index]
-        ];
+        const temporaryCard =
+            shuffledDeck[index];
+
+        shuffledDeck[index] =
+            shuffledDeck[randomIndex];
+
+        shuffledDeck[randomIndex] =
+            temporaryCard;
     }
 
-    return shuffled;
+    return shuffledDeck;
 }
 
+
+// ==========================================
+// PLAYER CREATION
+// ==========================================
+
+function createPlayer(
+    id,
+    name,
+    isHuman,
+    difficulty = null
+) {
+    return {
+        id,
+        name,
+        isHuman,
+        difficulty,
+
+        chips:
+            GAME_SETTINGS.startingChips,
+
+        hiddenCard: null,
+
+        openCards: [],
+
+        symbolCards: [
+            "+",
+            "−",
+            "÷"
+        ],
+
+        folded: false,
+
+        eliminated: false,
+
+        currentBet: 0,
+
+        totalRoundContribution: 0,
+
+        selectedTarget: null,
+
+        equation: [],
+
+        result: null
+    };
+}
+
+
+// ==========================================
+// PLAYER LIST CREATION
+// ==========================================
+
+function createPlayers(
+    aiCount,
+    difficulty
+) {
+    const players = [
+        createPlayer(
+            "player",
+            "You",
+            true
+        )
+    ];
+
+    for (
+        let index = 1;
+
+        index <= aiCount;
+
+        index++
+    ) {
+        players.push(
+            createPlayer(
+                `ai-${index}`,
+                `Computer ${index}`,
+                false,
+                difficulty
+            )
+        );
+    }
+
+    return players;
+}
+
+
+// ==========================================
+// ACTIVE PLAYER HELPERS
+// ==========================================
+
+function getActivePlayers() {
+    return gameState.players.filter(
+        player =>
+            !player.folded &&
+            !player.eliminated
+    );
+}
+
+
+function getHumanPlayer() {
+    return gameState.players.find(
+        player => player.isHuman
+    );
+}
+
+
+function getPlayerById(playerId) {
+    return gameState.players.find(
+        player =>
+            player.id === playerId
+    );
+}
 
 function createPlayer(
     id,
@@ -1322,26 +1542,96 @@ function createPlayers(
 }
 
 
+// ==========================================
+// PART 1B: ANTE, DRAWING AND SPECIAL CARDS
+// ==========================================
+
+function addGameMessage(message) {
+    gameState.eventMessages.push(message);
+
+    messageDisplay.textContent =
+        gameState.eventMessages.join(" ");
+}
+
+
+function clearGameMessages() {
+    gameState.eventMessages = [];
+    messageDisplay.textContent = "";
+}
+
+
+// ==========================================
+// ANTE
+// ==========================================
+
 function takeAnte() {
     for (const player of gameState.players) {
+        if (player.chips < GAME_SETTINGS.ante) {
+            player.eliminated = true;
+
+            addGameMessage(
+                `${player.name} does not have enough chips and is eliminated.`
+            );
+
+            continue;
+        }
+
         player.chips -= GAME_SETTINGS.ante;
-        gameState.pot += GAME_SETTINGS.ante;
+
+        player.totalRoundContribution +=
+            GAME_SETTINGS.ante;
+
+        gameState.pot +=
+            GAME_SETTINGS.ante;
     }
 }
 
 
+// ==========================================
+// DRAWING CARDS
+// ==========================================
+
 function drawCard() {
+    if (gameState.deck.length === 0) {
+        throw new Error(
+            "The deck is empty."
+        );
+    }
+
     return gameState.deck.pop();
 }
 
 
+function returnCardToDeck(card) {
+    if (!card) {
+        return;
+    }
+
+    gameState.deck.unshift(card);
+
+    gameState.deck =
+        shuffleDeck(gameState.deck);
+}
+
+
+function discardCard(card) {
+    if (!card) {
+        return;
+    }
+
+    gameState.discardPile.push(card);
+}
+
+
+// ==========================================
+// HIDDEN CARD
+// ==========================================
+
 function drawHiddenCard() {
     let card = drawCard();
 
-    while (card.category !== "number") {
-        gameState.deck.unshift(card);
-        gameState.deck =
-            shuffleDeck(gameState.deck);
+    while (!isNumberCard(card)) {
+        returnCardToDeck(card);
 
         card = drawCard();
     }
@@ -1350,64 +1640,231 @@ function drawHiddenCard() {
 }
 
 
-function drawAdditionalNumberCard() {
+// ==========================================
+// ADDITIONAL NUMBER DRAW
+// ==========================================
+
+function drawAdditionalNumberCard(
+    player,
+    reason
+) {
     let card = drawCard();
 
-    while (card.category !== "number") {
-        gameState.deck.unshift(card);
-        gameState.deck =
-            shuffleDeck(gameState.deck);
+    while (!isNumberCard(card)) {
+        discardCard(card);
+
+        addGameMessage(
+            `${player.name} drew ${card.value} while searching for the extra number card. It was discarded.`
+        );
 
         card = drawCard();
     }
+
+    addGameMessage(
+        `${player.name} received an extra number card because of ${reason}.`
+    );
 
     return card;
 }
 
 
-function processOpenCard(player, card) {
-    if (card.category === "number") {
+// ==========================================
+// MULTIPLICATION DISCARD RULE
+// ==========================================
+
+function getDiscardableSymbols(player) {
+    return player.symbolCards.filter(
+        symbol =>
+            symbol === "+" ||
+            symbol === "−" ||
+            symbol === "×"
+    );
+}
+
+
+function chooseHumanSymbolToDiscard(
+    player
+) {
+    const options =
+        getDiscardableSymbols(player);
+
+    if (options.length === 0) {
+        return null;
+    }
+
+    const formattedOptions =
+        options.join(", ");
+
+    let selectedSymbol = window.prompt(
+        `You drew ×.\n\nChoose one symbol to discard:\n${formattedOptions}\n\nDivision cannot be discarded.`
+    );
+
+    while (
+        selectedSymbol !== null &&
+        !options.includes(selectedSymbol)
+    ) {
+        selectedSymbol = window.prompt(
+            `Invalid choice.\n\nChoose one of:\n${formattedOptions}`
+        );
+    }
+
+    if (selectedSymbol === null) {
+        return options[0];
+    }
+
+    return selectedSymbol;
+}
+
+
+function chooseAiSymbolToDiscard(
+    player
+) {
+    const priority = [
+        "×",
+        "−",
+        "+"
+    ];
+
+    for (const symbol of priority) {
+        if (
+            player.symbolCards.includes(
+                symbol
+            )
+        ) {
+            return symbol;
+        }
+    }
+
+    return null;
+}
+
+
+function removeSymbolFromPlayer(
+    player,
+    symbol
+) {
+    const symbolIndex =
+        player.symbolCards.indexOf(
+            symbol
+        );
+
+    if (symbolIndex === -1) {
+        return false;
+    }
+
+    player.symbolCards.splice(
+        symbolIndex,
+        1
+    );
+
+    return true;
+}
+
+
+function processMultiplyCard(
+    player,
+    card
+) {
+    player.openCards.push(card);
+
+    const discardableSymbols =
+        getDiscardableSymbols(player);
+
+    let discardedSymbol = null;
+
+    if (discardableSymbols.length > 0) {
+        discardedSymbol =
+            player.isHuman
+                ? chooseHumanSymbolToDiscard(
+                    player
+                )
+                : chooseAiSymbolToDiscard(
+                    player
+                );
+
+        if (discardedSymbol) {
+            removeSymbolFromPlayer(
+                player,
+                discardedSymbol
+            );
+
+            addGameMessage(
+                `${player.name} discarded ${discardedSymbol} after drawing ×.`
+            );
+        }
+    }
+
+    player.symbolCards.push("×");
+
+    const extraNumber =
+        drawAdditionalNumberCard(
+            player,
+            "multiplication"
+        );
+
+    player.openCards.push(
+        extraNumber
+    );
+}
+
+
+// ==========================================
+// SQUARE-ROOT RULE
+// ==========================================
+
+function processSquareRootCard(
+    player,
+    card
+) {
+    player.openCards.push(card);
+
+    const extraNumber =
+        drawAdditionalNumberCard(
+            player,
+            "square root"
+        );
+
+    player.openCards.push(
+        extraNumber
+    );
+}
+
+
+// ==========================================
+// OPEN CARD PROCESSING
+// ==========================================
+
+function processOpenCard(
+    player,
+    card
+) {
+    if (isNumberCard(card)) {
         player.openCards.push(card);
 
         return;
     }
 
-    if (card.category === "square-root") {
-        player.openCards.push(card);
-
-        player.openCards.push(
-            drawAdditionalNumberCard()
+    if (isSquareRootCard(card)) {
+        processSquareRootCard(
+            player,
+            card
         );
 
         return;
     }
 
-    if (card.category === "multiply") {
-        player.openCards.push(card);
-
-        const removableIndex =
-            player.symbolCards.findIndex(
-                symbol =>
-                    symbol === "+" ||
-                    symbol === "−" ||
-                    symbol === "×"
-            );
-
-        if (removableIndex !== -1) {
-            player.symbolCards.splice(
-                removableIndex,
-                1
-            );
-        }
-
-        player.symbolCards.push("×");
-
-        player.openCards.push(
-            drawAdditionalNumberCard()
+    if (isMultiplyCard(card)) {
+        processMultiplyCard(
+            player,
+            card
         );
     }
 }
 
+
+// ==========================================
+// INITIAL DEAL
+// ==========================================
 
 function dealInitialCards() {
     if (gameState.cardsDealt) {
@@ -1417,30 +1874,121 @@ function dealInitialCards() {
         return;
     }
 
-    for (const player of gameState.players) {
+    clearGameMessages();
+
+    for (const player of getActivePlayers()) {
         player.hiddenCard =
             drawHiddenCard();
     }
 
-    for (let round = 0; round < 2; round++) {
-        for (const player of gameState.players) {
+    for (
+        let drawRound = 0;
+        drawRound < 2;
+        drawRound++
+    ) {
+        for (
+            const player of
+            getActivePlayers()
+        ) {
+            const card =
+                drawCard();
+
             processOpenCard(
                 player,
-                drawCard()
+                card
             );
         }
     }
 
     gameState.cardsDealt = true;
+    gameState.phase =
+        "first-betting";
+
+    dealButton.disabled = true;
 
     renderGame();
 
-    messageDisplay.textContent =
-        "Each player received one hidden card and two open-card draws.";
+    addGameMessage(
+        "Every active player received one hidden number card and two open-card draws."
+    );
+}
+
+// ==========================================
+// PART 1C: GAME RENDERING
+// ==========================================
+
+function createCardElement(card) {
+
+    const element =
+        document.createElement("span");
+
+    element.classList.add("game-card");
+
+    if (card.category === "number") {
+
+        element.classList.add(card.type);
+
+    } else {
+
+        element.classList.add("special");
+
+    }
+
+    element.textContent = card.value;
+
+    return element;
+
+}
+
+
+function renderSymbols(player, container) {
+
+    container.innerHTML = "";
+
+    for (const symbol of player.symbolCards) {
+
+        const element =
+            document.createElement("span");
+
+        element.classList.add(
+            "player-symbol"
+        );
+
+        element.textContent = symbol;
+
+        container.appendChild(element);
+
+    }
+
+}
+
+
+function renderOpenCards(player, container) {
+
+    container.innerHTML = "";
+
+    if (player.openCards.length === 0) {
+
+        container.innerHTML =
+            "<em>No cards dealt</em>";
+
+        return;
+
+    }
+
+    for (const card of player.openCards) {
+
+        container.appendChild(
+            createCardElement(card)
+        );
+
+    }
+
 }
 
 
 function renderGame() {
+
     potDisplay.textContent =
         gameState.pot;
 
@@ -1450,6 +1998,7 @@ function renderGame() {
     playersArea.innerHTML = "";
 
     for (const player of gameState.players) {
+
         const panel =
             document.createElement("article");
 
@@ -1457,12 +2006,31 @@ function renderGame() {
             "player-panel"
         );
 
-        const hiddenText =
-            player.isHuman
-                ? `${player.hiddenCard?.value ?? "Not dealt"}`
-                : "Hidden";
+        if (player.folded) {
+
+            panel.classList.add(
+                "player-folded"
+            );
+
+        }
+
+        if (player.eliminated) {
+
+            panel.classList.add(
+                "player-eliminated"
+            );
+
+        }
+
+        const hiddenCardText =
+            player.hiddenCard
+                ? player.isHuman
+                    ? player.hiddenCard.value
+                    : "Hidden"
+                : "Not dealt";
 
         panel.innerHTML = `
+
             <h3>${player.name}</h3>
 
             <p>
@@ -1471,108 +2039,132 @@ function renderGame() {
             </p>
 
             <p>
-                Hidden card:
-                <strong>${hiddenText}</strong>
+                Current Bet:
+                <strong>${player.totalRoundContribution}</strong>
             </p>
 
-            <p>Available symbols:</p>
+            <p>
+                Hidden Card:
+                <strong>${hiddenCardText}</strong>
+            </p>
+
+            <p>
+                Symbols
+            </p>
 
             <div
                 class="symbol-list"
                 id="symbols-${player.id}"
             ></div>
 
-            <p>Open cards:</p>
+            <p>
+                Open Cards
+            </p>
 
             <div
                 class="card-list"
                 id="cards-${player.id}"
             ></div>
+
         `;
 
         playersArea.appendChild(panel);
 
-        const symbolList =
+        renderSymbols(
+            player,
             document.getElementById(
                 `symbols-${player.id}`
-            );
+            )
+        );
 
-        for (const symbol of player.symbolCards) {
-            const element =
-                document.createElement("span");
-
-            element.classList.add(
-                "player-symbol"
-            );
-
-            element.textContent = symbol;
-
-            symbolList.appendChild(element);
-        }
-
-        const cardList =
+        renderOpenCards(
+            player,
             document.getElementById(
                 `cards-${player.id}`
-            );
+            )
+        );
 
-        for (const card of player.openCards) {
-            const element =
-                document.createElement("span");
-
-            element.classList.add(
-                "game-card"
-            );
-
-            if (card.category === "number") {
-                element.classList.add(
-                    card.type
-                );
-            } else {
-                element.classList.add(
-                    "special"
-                );
-            }
-
-            element.textContent = card.value;
-
-            cardList.appendChild(element);
-        }
     }
+
+}
+
+
+// ==========================================
+// PART 1D: GAME START AND EVENT LISTENERS
+// ==========================================
+
+function resetDealButton() {
+    dealButton.disabled = false;
+    dealButton.textContent = "Deal Cards";
 }
 
 
 function startGame() {
-    const difficulty =
+    const selectedDifficulty =
         difficultySelect.value;
 
-    const aiCount =
+    const selectedAiCount =
         Number(aiCountSelect.value);
 
     gameState = {
-        difficulty,
+        difficulty:
+            selectedDifficulty,
+
         round: 1,
+
         pot: 0,
-        deck: shuffleDeck(createDeck()),
-        players: createPlayers(
-            aiCount,
-            difficulty
-        ),
-        cardsDealt: false
+
+        deck:
+            shuffleDeck(
+                createDeck()
+            ),
+
+        discardPile: [],
+
+        players:
+            createPlayers(
+                selectedAiCount,
+                selectedDifficulty
+            ),
+
+        cardsDealt: false,
+
+        phase: "ante",
+
+        eventMessages: []
     };
+
+    resetDealButton();
+
+    clearGameMessages();
 
     takeAnte();
 
-    gameDifficultyDisplay.textContent =
-        DIFFICULTIES[difficulty].name;
+    gameState.phase =
+        "waiting-for-deal";
 
-    messageDisplay.textContent =
-        "Every player paid a one-chip ante. Press Deal Cards.";
+    gameDifficultyDisplay.textContent =
+        DIFFICULTIES[
+            selectedDifficulty
+        ].name;
 
     renderGame();
+
+    addGameMessage(
+        "Every active player paid a one-chip ante."
+    );
+
+    addGameMessage(
+        "Press Deal Cards to begin the round."
+    );
 
     showScreen("game-screen");
 }
 
+
+// ==========================================
+// GAME BUTTON EVENTS
+// ==========================================
 
 startGameButton.addEventListener(
     "click",
@@ -1582,7 +2174,16 @@ startGameButton.addEventListener(
 
 dealButton.addEventListener(
     "click",
-    dealInitialCards
+    () => {
+        try {
+            dealInitialCards();
+        } catch (error) {
+            console.error(error);
+
+            messageDisplay.textContent =
+                "The cards could not be dealt. Check the browser console for details.";
+        }
+    }
 );
 
 
