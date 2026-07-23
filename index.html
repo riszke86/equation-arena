@@ -596,7 +596,63 @@
                     Deal Cards
                 </button>
 
+                <button
+                    id="pass-button"
+                    class="secondary-button"
+                    disabled
+                >
+                    Pass
+                </button>
+
+                <button
+                    id="call-button"
+                    class="primary-button"
+                    disabled
+                >
+                    Call
+                </button>
+
+                <button
+                    id="raise-button"
+                    class="primary-button"
+                    disabled
+                >
+                    Raise
+                </button>
+
+                <button
+                    id="fold-button"
+                    class="secondary-button"
+                    disabled
+                >
+                    Fold
+                </button>
+
             </div>
+
+            <div class="betting-status">
+
+                <div class="bet-box">
+
+                    <span>Current Bet</span>
+
+                    <strong id="current-bet">
+                        0
+                    </strong>
+
+            </div>
+
+            <div class="bet-box">
+
+                <span>Current Turn</span>
+
+                <strong id="current-player">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
 
             <p
                 id="message"
@@ -607,8 +663,18 @@
 
     </main>
 
-    <script src="js/game.js"></script>
+    <script src="js/state.js"></script>
 
+    <script src="js/navigation.js"></script>
+    <script src="js/tutorial.js"></script>
+    <script src="js/practice.js"></script>
+
+    <script src="js/players.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/deck.js"></script>
+    <script src="js/betting.js"></script>
+
+    <script src="js/game.js"></script>
 </body>
 
 </html>
